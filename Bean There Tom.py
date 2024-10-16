@@ -1,17 +1,9 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
-"""
-Created on Mon Oct 14 15:30:52 2024
-
-@author: Tom
-"""
-
 import pandas as pd
 import matplotlib.pyplot as plt
 import math
 
 # Load the specific sheet 'E-com sales orders by product' from the Excel file
-file_path = '/Users/Tom/Downloads/Bean there done that data.xlsx'
+file_path = 'Bean there done that data.xlsx'
 ecom_sales = pd.read_excel(file_path, sheet_name='E-com sales orders by product')
 
 # Filter the data where the value is greater than or equal to 55
