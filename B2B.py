@@ -10,21 +10,13 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 
 # Bestandsnaam van de Excel
-Bean_there = '/Users/Aron Wolswinkel/Downloads/Bean there done that data.xlsx'
+Bean_there = 'Bean there done that data.xlsx'
 
 # Lees het specifieke tabblad in
-df_tab1 = pd.read_excel(Bean_there, sheet_name='Inventory (raw material)')  # Vervang 'Tabblad1' door de naam van je eerste tabblad
-df_tab2 = pd.read_excel(Bean_there, sheet_name='Inventory (finished product)')  # Vervang 'Tabblad2' door de naam van je tweede tabblad
-df_tab3 = pd.read_excel(Bean_there, sheet_name='Roasting')
-df_tab4 = pd.read_excel(Bean_there, sheet_name='E-com sales orders by product')
 df_tab5 = pd.read_excel(Bean_there, sheet_name='B2B orders')
 
 
 # Bekijk de eerste paar rijen van een tabblad
-print(df_tab1.head())
-print(df_tab2.head())
-print(df_tab3.head())
-print(df_tab4.head())
 print(df_tab5.head())
 
 # Lees de data uit het Excel-bestand (tabblad 5)
@@ -80,7 +72,7 @@ df_city_value = df_tab5.groupby('City')['Value'].sum().reset_index()
 df_city_value.columns = ['City', 'Total Value']
 
 # Sorteer de steden op basis van de totale order value
-df_city_value = df_city_value.sort_value(by='Total Value', ascending=False)
+df_city_value = df_city_value.sort_values(by='Total Value', ascending=False)
 
 # Maak een barplot om de totale order value per stad te visualiseren
 plt.figure(figsize=(10, 6))
@@ -138,3 +130,26 @@ plt.xticks(rotation=45)
 # Toon de plot
 plt.tight_layout()
 plt.show()
+
+# Groepeer op City en sommeer de order quantity per stad
+df_city_quantity = df_tab5.groupby('City')['Quantity'].sum().reset_index()
+
+# Hernoem de kolommen voor duidelijkheid
+df_city_quantity.columns = ['City', 'Total Quantity']
+
+# Sorteer de steden op basis van de totale order quantity
+df_city_quantity = df_city_quantity.sort_values(by='Total Quantity', ascending=False)
+
+# Maak een barplot om de totale order quantity per stad te visualiseren
+plt.figure(figsize=(10, 6))
+sns.barplot(x='Total Quantity', y='City', data=df_city_quantity, palette='magma')
+
+# Voeg titels en labels toe
+plt.title('Total Quantity of Orders per City', fontsize=16)
+plt.xlabel('Total Quantity of Orders', fontsize=12)
+plt.ylabel('City', fontsize=12)
+
+# Toon de plot
+plt.tight_layout()
+plt.show()
+
