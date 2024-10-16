@@ -41,28 +41,6 @@ plt.ylabel('Customer', fontsize=12)
 plt.tight_layout()
 plt.show()
 
-# Groepeer op City en tel het aantal unieke klanten per stad
-df_city_customers = df_tab5.groupby('City')['Customer'].nunique().reset_index()
-
-# Hernoem de kolommen voor duidelijkheid
-df_city_customers.columns = ['City', 'Customer Count']
-
-# Sorteer de steden op basis van het aantal klanten
-df_city_customers = df_city_customers.sort_values(by='Customer Count', ascending=False)
-
-# Maak een barplot om het aantal klanten per stad te visualiseren
-plt.figure(figsize=(10, 6))
-sns.barplot(x='Customer Count', y='City', data=df_city_customers, palette='viridis')
-
-# Voeg titels en labels toe
-plt.title('Number of Customers per City', fontsize=16)
-plt.xlabel('Number of Customers', fontsize=12)
-plt.ylabel('City', fontsize=12)
-
-# Toon de plot
-plt.tight_layout()
-plt.show()
-
 # Lees de data uit het Excel-bestand (tabblad 5)
 
 # Groepeer op City en sommeer de order value per stad
@@ -152,4 +130,66 @@ plt.ylabel('City', fontsize=12)
 # Toon de plot
 plt.tight_layout()
 plt.show()
+
+# Zet de 'Delivery date' kolom om naar een datetime-indeling
+df_tab5['Delivery date'] = pd.to_datetime(df_tab5['Delivery date'])
+
+# Groepeer de data op 'Delivery date' en sommeer de quantities
+df_quantity_date = df_tab5.groupby('Delivery date')['Quantity'].sum().reset_index()
+
+# Maak een lijnplot om de totale hoeveelheid per leverdatum te visualiseren
+plt.figure(figsize=(10, 6))
+sns.barplot(x='Delivery date', y='Quantity', data=df_quantity_date, palette='magma')
+
+# Voeg titels en labels toe
+plt.title('Total Quantity per Delivery Date', fontsize=16)
+plt.xlabel('Delivery Date', fontsize=12)
+plt.ylabel('Total Quantity', fontsize=12)
+
+# Layout voor netjes plaatsen van labels
+plt.xticks(rotation=45)
+plt.tight_layout()
+
+# Toon de plot
+plt.show()
+
+# Groepeer op City en tel het aantal unieke klanten per stad
+df_city_customers = df_tab5.groupby('City')['Customer'].nunique().reset_index()
+
+# Hernoem de kolommen voor duidelijkheid
+df_city_customers.columns = ['City', 'Customer Count']
+
+# Sorteer de steden op basis van het aantal klanten, van laag naar hoog
+df_city_customers = df_city_customers.sort_values(by='Customer Count', ascending=True)
+
+# Maak een lijst met kleuren, waarbij 'red' wordt gebruikt voor Customer Count = 1, 'salmon' voor Customer Count = 2, en 'lightgrey' voor de rest
+colors = ['red' if count == 1 else 'salmon' if count == 2 else 'lightgrey' for count in df_city_customers['Customer Count']]
+
+# Maak een barplot om het aantal klanten per stad te visualiseren
+plt.figure(figsize=(10, 6))
+sns.barplot(x='Customer Count', y='City', data=df_city_customers, palette=colors)  # Gebruik de aangepaste kleurenlijst
+
+# Voeg titels en labels toe
+plt.title('Number of B2B Customers per City', fontsize=18, loc='left', pad=10, x=-0.22)  # Plaats titel linksboven met padding en schuif naar links
+
+# Verwijder de titels van de x-as en y-as
+plt.xlabel('')  # Lege string voor x-as titel
+plt.ylabel('')  # Lege string voor y-as titel
+
+# Maak een dunne witte lijn tussen de titel en de grafiek
+plt.axhline(y=0, color='white', linewidth=0.8)  # Voeg de lijn toe
+
+# Maak de y-as labels groter
+plt.yticks(fontsize=14)  # Pas de fontsize aan voor y-as labels
+plt.xticks(fontsize=14)
+
+# Verwijder de zwarte rand om de visualisatie heen
+plt.gca().spines['top'].set_visible(False)
+plt.gca().spines['right'].set_visible(False)
+
+# Toon de plot
+plt.tight_layout()
+plt.show()
+
+
 
