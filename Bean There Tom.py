@@ -8,6 +8,7 @@ Created on Mon Oct 14 15:30:52 2024
 
 import pandas as pd
 import matplotlib.pyplot as plt
+import math
 
 # Load the specific sheet 'E-com sales orders by product' from the Excel file
 file_path = '/Users/Tom/Downloads/Bean there done that data.xlsx'
@@ -37,11 +38,11 @@ plt.barh(labels, values_495, color='orangered', label='€4.95')
 plt.barh(labels, values_0, left=values_495, color='lightgrey', label='€0')
 
 # Add titles and labels
-plt.title('Wrongly Charged with', loc='left', weight='bold', fontsize=14, color='black')  # Align title to the left
+plt.title('Orders Wrongly Charged with', loc='left', weight='bold', fontsize=14, color='black')  # Align title to the left
 plt.xlabel('Amount of Orders > €55')
 
 # Add text to the right of the title
-plt.text(0.445, 1.08, 'Delivery Fees', color='orangered', weight='bold', fontsize=14, ha='left', transform=plt.gca().transAxes)
+plt.text(0.585, 1.08, 'Delivery Fees', color='orangered', weight='bold', fontsize=14, ha='left', transform=plt.gca().transAxes)
 
 # Remove the top and right spines (axes)
 plt.gca().spines['right'].set_visible(False)
@@ -52,11 +53,11 @@ plt.gca().spines['left'].set_visible(False)  # Verberg de y-as spine
 plt.gca().set_yticks([])  # Verberg de y-as ticks
 
 
-# Format the x-axis with 'k' for thousands
-plt.gca().xaxis.set_major_formatter(plt.FuncFormatter(lambda x, _: f'{int(x / 1000)}k' if x >= 1000 else str(int(x))))
+# Format the x-axis with 'k' for thousands, rounded up to the nearest thousand
+plt.gca().xaxis.set_major_formatter(plt.FuncFormatter(lambda x, _: f'{math.ceil(x / 1000)}k' if x >= 1000 else str(math.ceil(x))))
 
-# Add x-axis label for total orders with €0 delivery fee
-plt.text(values_495, -0.59, f'{int(values_495 / 1000)}k', color='orangered', fontsize=10, va='center', ha='center')
+# Add x-axis label for total orders with €0 delivery fee, rounded up
+plt.text(values_495, -0.59, f'{math.ceil(values_495 / 1000)}k' if values_495 >= 1000 else f'{math.ceil(values_495)}', color='orangered', fontsize=10, va='center', ha='center')
 
 # Add a tick mark at the position of values_495
 plt.xticks(list(plt.xticks()[0]) + [values_495], color='black')  # Voeg een tick mark toe op values_495
