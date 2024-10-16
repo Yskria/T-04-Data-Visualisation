@@ -69,4 +69,5 @@ plt.gca().set_ylabel('')
 plt.tight_layout()
 plt.show()
 
-
+#KPI = Ensure that the deviation in roasting consumption does not exceed 10% of the occupancy rate.
+#Advice is to roast more beans and therefor increase the sales, instead of making costs due to underutilization. Or to invest in a (probably) less expensive machines whose occupancy rate meets the consumption and therefor doesn't cost costs of underutilization
