@@ -61,18 +61,5 @@ plt.xlim(0, values_495 + values_0 + 10)  # Voeg wat extra ruimte toe voor duidel
 plt.tight_layout()  # Adjust layout to fit labels
 plt.show()
 
-
-
-#kijken naar hoe veel er wordt ingekocht per product (purchased) (ten opzichte van elkaar)?
-#kijken naar het verbruik aan producten (zie stock level)?
-#kijkend naar verlies (Damaged + expired) (mss ook kijkend naar de leverancier)
-#mss is er een correlatie tussen leverancier en product?
-#data geeft alleen maanden weer en niet jaartal (2023)
-#stock value is 4 (bij het eerste product), 4,25 bij 2de product
-#kijkend naar de waardes per product (zie voorgaande regel)
-
-#misschien een overzicht/planning van stock op basis van inkoop en verbruik
-#misschien een eigen gemaakte capacity voor de warehouse hebben, of zo min mogelijk in de warehouse (wel rekening houdend met seizoen en buffer etc)
-#vergelijk de 2 verschillende roasters (welke werkt efficienter/effectiever)
-#er gaat iets fout met aankopingen boven 55 zonder transportkosten (E-commerce)
-#misschien locatie van vestiging wijzigen op basis van locatie van de meeste leveringen
+#KPI = A maximum of 5% of the total Orders > €55 Wrongly Charged with Delivery Fees
+#Advice is to better monitor when charging Delivery Fees and look for the issue why it's happening

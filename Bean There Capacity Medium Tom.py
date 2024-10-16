@@ -18,6 +18,7 @@ month_order = ['January', 'February', 'March', 'April', 'May', 'June',
 
 # Ensure 'Month' is treated as a categorical type
 Roasting['Month'] = pd.Categorical(Roasting['Month'], categories=month_order, ordered=True)
+Roasting['Month'] = Roasting['Month'].apply(lambda x: x[:3])
 
 # Create the 'Weight p/hour' column
 Roasting['Weight p/hour'] = (Roasting['Number of batches per day'] * 
@@ -34,24 +35,44 @@ plt.figure(figsize=(10, 12))  # Increase height for two plots
 
 # First subplot
 plt.subplot(2, 1, 1)  # 2 rows, 1 column, 1st subplot
-plt.plot(pivot_data.index, pivot_data.values, marker='o', color='b')
+plt.plot(pivot_data.index, pivot_data.values, linewidth=5, color='cornflowerblue')
 
 # Add horizontal lines
-plt.axhline(y=215, color='black', linestyle='--', linewidth=2)
+plt.axhline(y=215, color='grey', linestyle='--', linewidth=2)
 plt.axhline(y=182.75, color='orangered', linestyle='--', linewidth=2)
 
 # Set y-axis limits
-plt.ylim(80, 220)  # Start y-axis from 140
+plt.ylim(100, 220)
 
-# Add labels and title
-plt.title('Weight per Hour per Month for Medium Roast')
-plt.xlabel('Month')
-plt.ylabel('Weight p/hour')
-plt.xticks(rotation=45)  # Rotate the x-axis labels if necessary
+# Dynamically set x-axis limits based on where the data begins and ends
+plt.xlim(pivot_data.index.min(), pivot_data.index.max())
+
+# Add the title using text, aligned slightly to the left
+plt.gca().text(-0.045, 1.05, 'Medium Roast Consumption', color='black', fontsize=16, weight='bold', transform=plt.gca().transAxes)
+
+# Add labels for the horizontal lines on the right y-axis
+plt.text(len(pivot_data.index) - 0.9, 215, 'Capacity', color='grey', va='center', ha='left', fontsize=11, weight='bold')
+plt.text(len(pivot_data.index) - 0.9, 182.75, 'Occupancy rate', color='orangered', va='center', ha='left', fontsize=11, weight='bold')
+
+# Add label for the Weight p/hour line
+plt.text(len(pivot_data.index) - 0.9, pivot_data.values[-1], 'Weight (kg/h)', color='cornflowerblue', va='center', ha='left', fontsize=11, weight='bold')
+
+# Remove top and right spines (axes)
+plt.gca().spines['right'].set_visible(False)
+plt.gca().spines['top'].set_visible(False)
+
+# Remove x-axis and y-axis labels
+plt.gca().set_xlabel('')
+plt.gca().set_ylabel('')
 
 # Adjust layout and show the plots
 plt.tight_layout()
 plt.show()
+
+
+
+
+
 
 
 
