@@ -48,14 +48,14 @@ plt.ylim(100, 220)
 plt.xlim(pivot_data.index.min(), pivot_data.index.max())
 
 # Add the title using text, aligned slightly to the left
-plt.gca().text(-0.045, 1.05, 'Probat P60 Consumption', color='black', fontsize=16, weight='bold', transform=plt.gca().transAxes)
+plt.gca().text(-0.045, 1.05, 'Probat P60 Consumption (in kg/h)', color='black', fontsize=16, weight='bold', transform=plt.gca().transAxes)
 
 # Add labels for the horizontal lines on the right y-axis
 plt.text(len(pivot_data.index) - 0.9, 215, 'Capacity', color='grey', va='center', ha='left', fontsize=11, weight='bold')
 plt.text(len(pivot_data.index) - 0.9, 182.75, 'Occupancy rate', color='orangered', va='center', ha='left', fontsize=11, weight='bold')
 
 # Add label for the Weight p/hour line
-plt.text(len(pivot_data.index) - 0.9, pivot_data.values[-1], 'Weight (kg/h)', color='cornflowerblue', va='center', ha='left', fontsize=11, weight='bold')
+plt.text(len(pivot_data.index) - 0.9, pivot_data.values[-1], 'Avg weight', color='cornflowerblue', va='center', ha='left', fontsize=11, weight='bold')
 
 # Remove top and right spines (axes)
 plt.gca().spines['right'].set_visible(False)
