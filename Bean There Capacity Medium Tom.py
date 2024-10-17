@@ -48,7 +48,7 @@ plt.ylim(100, 220)
 plt.xlim(pivot_data.index.min(), pivot_data.index.max())
 
 # Add the title using text, aligned slightly to the left
-plt.gca().text(-0.045, 1.05, 'Medium Roast Consumption', color='black', fontsize=16, weight='bold', transform=plt.gca().transAxes)
+plt.gca().text(-0.045, 1.05, 'Probat P60 Consumption', color='black', fontsize=16, weight='bold', transform=plt.gca().transAxes)
 
 # Add labels for the horizontal lines on the right y-axis
 plt.text(len(pivot_data.index) - 0.9, 215, 'Capacity', color='grey', va='center', ha='left', fontsize=11, weight='bold')
