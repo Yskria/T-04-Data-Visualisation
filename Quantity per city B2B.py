@@ -1,3 +1,4 @@
+
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
@@ -55,8 +56,6 @@ plt.axvline(x=2000, color='grey', linestyle=':', linewidth=1.5)
 # Toon de plot
 plt.tight_layout()
 plt.show()
-
-
 
 #Improvement opportunitie: remove city's with 1 Quantity per city to focus on B2B Quantitys nearby.
 #Growth: focus on city's with 1 or 2 Quantitys to grow in those city's. In that case you don't drive to a city for one Quantity.
