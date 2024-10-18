@@ -131,3 +131,6 @@ plt.show()
 
 # Print the combined data for validation
 print(combined_data)
+
+#KPI: The ratio of the actual production capacity of the machine compared to the maximum capacity. Occupancy Rate=(ammount of in kg/h / maximum production capacity in kg/h) * 100%
+#Advice is to produce as much as the machines can handle (by not going past the ideal occupancy rate). Increasing production demands an increase in sales, when sales grow to much and production goes past the ideal occupancy rate. It would be ideal to invest in a new machine.
