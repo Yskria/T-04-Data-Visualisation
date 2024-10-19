@@ -86,9 +86,9 @@ plt.text(df_pivot_2024.index[-1] + 0.1, df_pivot_2024['B2B orders'].iloc[-1], ' 
          ha='left', va='center', fontsize=18, fontweight='bold')
 
 # Instellingen van de grafiek
-plt.title('Total Profit per Month for E-com Sales and B2B Orders (2023 & Forecast 2024)', loc='left', fontsize=22, fontweight='bold', x=-0.05)  # Titel verder naar links
+plt.title('Total Profit per Month for E-com Sales and B2B Orders (2023 & Forecast 2024)', loc='left', fontsize=22, fontweight='bold', x=-0.04)  # Titel verder naar links
 plt.xlabel('', fontsize=18)  # Lege string voor x-as label
-plt.ylabel('Total Profit in €', fontsize=18)
+plt.ylabel('', fontsize=18)  # Lege string voor y-as label
 
 # Verander de labels voor de x-as om leidende nullen weer te geven en na 12 bij 01 te starten
 plt.xticks(df_pivot_combined.index, labels=[f'{m:02}' if m <= 12 else f'{m - 12:02}' for m in df_pivot_combined.index], fontsize=12)

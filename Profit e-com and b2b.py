@@ -72,9 +72,9 @@ plt.text(df_pivot.index[-1] + 0.1, df_pivot['B2B orders'].iloc[-1], ' B2B orders
          ha='left', va='center', fontsize=18, fontweight='bold')  # Verander hier fontsize en fontweight
 
 # Instellingen van de grafiek
-plt.title('Total Profit per Month for E-com Sales and B2B Orders (2023)', fontsize=22, fontweight='bold', loc='left', x=-0.1)  # Titel dikgedrukt, groter en verder naar links
+plt.title('Total Profit per Month for E-com Sales and B2B Orders (2023)', fontsize=22, fontweight='bold', loc='left', x=-0.06)  # Titel dikgedrukt, groter en verder naar links
 plt.xlabel('2023', fontsize=18)  # Verander hier fontsize
-plt.ylabel('Total Profit in €', fontsize=18)  # Verander hier fontsize
+plt.ylabel('', fontsize=18)  # Maak ylabel leeg om de tekst te verwijderen
 
 # Verander de labels voor de x-as om leidende nullen weer te geven
 plt.xticks(df_pivot.index, labels=[f'{m:02}' for m in df_pivot.index], fontsize=12)  # Maandnummer met leidende nul
@@ -96,3 +96,4 @@ plt.gca().spines['right'].set_visible(False)  # Rechte rand verbergen
 # Toon de grafiek
 plt.tight_layout()
 plt.show()
+
