@@ -42,13 +42,13 @@ plt.axhline(y=215, color='grey', linestyle='--', linewidth=2)
 plt.axhline(y=182.75, color='orangered', linestyle='--', linewidth=2)
 
 # Set y-axis limits
-plt.ylim(100, 220)
+plt.ylim(0, 220)
 
 # Dynamically set x-axis limits based on where the data begins and ends
 plt.xlim(pivot_data.index.min(), pivot_data.index.max())
 
 # Add the title using text, aligned slightly to the left
-plt.gca().text(-0.045, 1.05, 'Probat P60 Consumption (in kg/h)', color='black', fontsize=16, weight='bold', transform=plt.gca().transAxes)
+plt.gca().text(-0.045, 1.05, 'Underutilization Probat P60 (in kg/h)', color='black', fontsize=16, weight='bold', transform=plt.gca().transAxes)
 
 # Add labels for the horizontal lines on the right y-axis
 plt.text(len(pivot_data.index) - 0.9, 215, 'Capacity', color='grey', va='center', ha='left', fontsize=11, weight='bold')

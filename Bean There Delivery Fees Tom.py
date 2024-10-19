@@ -61,5 +61,5 @@ plt.xlim(0, values_495 + values_0 + 10)  # Voeg wat extra ruimte toe voor duidel
 plt.tight_layout()  # Adjust layout to fit labels
 plt.show()
 
-#KPI = A maximum of 5% of the total Orders > €55 Wrongly Charged with Delivery Fees
+#KPI = A maximum of the total Orders > €55 Wrongly Charged with Delivery Fees in percentage
 #Advice is to better monitor when charging Delivery Fees and look for the issue why it's happening
