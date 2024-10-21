@@ -1,6 +1,5 @@
 import pandas as pd
 import matplotlib.pyplot as plt
-from matplotlib.ticker import FuncFormatter
 
 # Bestandsnaam van de Excel
 Bean_there = 'Bean there done that data.xlsx'
@@ -13,85 +12,79 @@ df_tab5 = pd.read_excel(Bean_there, sheet_name='B2B orders')
 df_tab4['Delivery date'] = pd.to_datetime(df_tab4['Delivery date'])
 df_tab5['Delivery date'] = pd.to_datetime(df_tab5['Delivery date'])
 
-# Voeg de kolom 'Profit E-com sales' toe aan tabblad 4
-if all(col in df_tab4.columns for col in ['Value', 'Shipping costs', 'Delivery fee', 'Quantity']):
-    df_tab4['Profit E-com sales'] = (df_tab4['Value'] - df_tab4['Shipping costs'] - df_tab4['Delivery fee']) * df_tab4['Quantity']
+# Filter alleen de "Medium Roast" rijen voor e-com sales (pas de kolomnaam aan op basis van je data)
+df_tab4_medium_roast = df_tab4[df_tab4['Product'] == 'Medium Roast']  # Pas de kolom 'Product' aan indien nodig
+
+# Voeg de kolom 'Profit E-com sales' toe aan de gefilterde dataset voor e-com sales
+if all(col in df_tab4_medium_roast.columns for col in ['Value', 'Shipping costs', 'Delivery fee', 'Quantity', 'Bag type']):
+    # Conditionele aanpassing voor de 'Quantity' als 'Bag type' 1 is
+    df_tab4_medium_roast['Adjusted Quantity'] = df_tab4_medium_roast.apply(
+        lambda row: row['Quantity'] * 2 if row['Bag type'] == 1 else row['Quantity'], axis=1
+    )
+    
+    # Berekening van de winst, waarbij de 'Adjusted Quantity' wordt gebruikt
+    df_tab4_medium_roast['Profit E-com sales'] = (
+        (df_tab4_medium_roast['Value'] + df_tab4_medium_roast['Shipping costs'] + df_tab4_medium_roast['Delivery fee'])
+        / df_tab4_medium_roast['Adjusted Quantity']
+    )
 
 # Voeg de kolom 'Profit B2B orders' toe aan tabblad 5
 if all(col in df_tab5.columns for col in ['Value', 'Shipping costs', 'Quantity']):
-    df_tab5['Profit B2B orders'] = (df_tab5['Value'] - df_tab5['Shipping costs']) * df_tab5['Quantity']
+    df_tab5['Profit B2B orders'] = (df_tab5['Value'] + df_tab5['Shipping costs']) / df_tab5['Quantity']
 
-# Filter alleen data uit 2023
-df_tab4 = df_tab4[df_tab4['Delivery date'].dt.year == 2023]
+# Filter alleen data uit 2023 voor beide datasets
+df_tab4_medium_roast = df_tab4_medium_roast[df_tab4_medium_roast['Delivery date'].dt.year == 2023]
 df_tab5 = df_tab5[df_tab5['Delivery date'].dt.year == 2023]
 
-# Groepeer per maand om de som van de winst per maand te krijgen
-df_tab4['Month'] = df_tab4['Delivery date'].dt.to_period('M')
-df_tab5['Month'] = df_tab5['Delivery date'].dt.to_period('M')
+# Bereken het gemiddelde over heel 2023 voor beide datasets
+mean_profit_ecom = df_tab4_medium_roast['Profit E-com sales'].mean()
+mean_profit_b2b = df_tab5['Profit B2B orders'].mean()
 
-df_profit_ecom = df_tab4.groupby('Month')['Profit E-com sales'].sum().reset_index()
-df_profit_b2b = df_tab5.groupby('Month')['Profit B2B orders'].sum().reset_index()
+# Maak een lijst met de gemiddelde winst per categorie
+categories = ['Average Profit (2023)']
+mean_b2b = [mean_profit_b2b]
+mean_ecom = [mean_profit_ecom]
 
-# Voeg een kolom toe om de categorieën te onderscheiden
-df_profit_ecom['Type'] = 'E-com sales'
-df_profit_b2b['Type'] = 'B2B orders'
+# Maak de stacked bar chart horizontaal
+plt.figure(figsize=(12, 3))
 
-# Hernoem de kolommen naar een gemeenschappelijke naam voor de y-as
-df_profit_ecom.rename(columns={'Profit E-com sales': 'Profit'}, inplace=True)
-df_profit_b2b.rename(columns={'Profit B2B orders': 'Profit'}, inplace=True)
-
-# Combineer de twee datasets voor eenvoudige plotten
-df_combined = pd.concat([df_profit_ecom, df_profit_b2b], axis=0)
-
-# Maak een pivot table voor de lijndiagram
-df_pivot = df_combined.pivot(index='Month', columns='Type', values='Profit').fillna(0)
-
-# Voor de x-as alleen het maandnummer gebruiken
-df_pivot.index = df_pivot.index.month
-
-# Maak het lijndiagram met Matplotlib
-plt.figure(figsize=(12, 6))
-
-# Plot de lijnen voor elk type (zonder markers en met gelijke lijndikte)
-plt.plot(df_pivot.index, df_pivot['E-com sales'], label='E-com sales', linewidth=4, color='blue')
-plt.plot(df_pivot.index, df_pivot['B2B orders'], label='B2B orders', linewidth=4, color='purple')
-
-# Aangepaste formatter om 'M' toe te voegen, maar niet bij 0
-def millions_formatter(x, pos):
-    if x == 0:
-        return '0'
-    return f'{int(x / 1_000_000)}M'  # Verander hier om hele getallen weer te geven
-
-# Formatter voor de y-as om de waarden in hele getallen (miljoenen) weer te geven
-plt.gca().yaxis.set_major_formatter(FuncFormatter(millions_formatter))
-
-# Voeg de lijnlabels handmatig toe (rechts van de lijnen) met dikgedrukt lettertype
-plt.text(df_pivot.index[-1] + 0.1, df_pivot['E-com sales'].iloc[-1], ' E-com sales', color='blue', 
-         ha='left', va='center', fontsize=18, fontweight='bold')  # Verander hier fontsize en fontweight
-plt.text(df_pivot.index[-1] + 0.1, df_pivot['B2B orders'].iloc[-1], ' B2B orders', color='purple', 
-         ha='left', va='center', fontsize=18, fontweight='bold')  # Verander hier fontsize en fontweight
+# Stacked bar chart met B2B orders onder en E-com sales bovenop
+plt.barh(categories, mean_b2b, label='B2B orders', color='cornflowerblue')
+plt.barh(categories, mean_ecom, left=mean_b2b, label='E-com sales (Medium Roast)', color='lightgrey')
 
 # Instellingen van de grafiek
-plt.title('Total Profit per Month for E-com Sales and B2B Orders (2023)', fontsize=22, fontweight='bold', loc='left', x=-0.1)  # Titel dikgedrukt, groter en verder naar links
-plt.xlabel('2023', fontsize=18)  # Verander hier fontsize
-plt.ylabel('Total Profit in €', fontsize=18)  # Verander hier fontsize
+title_text = "ARPU (€) in B2B sales tops E-com in '23 | Medium Roast"
+first_part = ' '.join(title_text.split()[:5])  # De eerste vier woorden
+remaining_part = ' '.join(title_text.split()[5:])  # De rest van de titel
 
-# Verander de labels voor de x-as om leidende nullen weer te geven
-plt.xticks(df_pivot.index, labels=[f'{m:02}' for m in df_pivot.index], fontsize=12)  # Maandnummer met leidende nul
-plt.ylim(0, None)  # Begin de y-as bij 0
+# Plaats de titel met gescheiden kleuren
+plt.text(0, 1.1, first_part, fontsize=22, fontweight='bold', color='cornflowerblue', transform=plt.gca().transAxes)  # Eerste 4 woorden
+plt.text(0.33, 1.1, remaining_part, fontsize=22, fontweight='bold', color='black', transform=plt.gca().transAxes)  # Rest van de titel
 
-# Vergroot het lettertype van de y-as ticks
-plt.tick_params(axis='y', labelsize=15)  # Groter lettertype voor y-as ticks
-plt.tick_params(axis='x', labelsize=15)  # Groter lettertype voor x-as ticks
+# Verhoog het lettertype van de ticks
+plt.tick_params(axis='y', labelsize=15)
+plt.tick_params(axis='x', labelsize=15)
+
+# Verwijder de y-as en x-as labels
+plt.ylabel('')  # Verwijder de y-as label
+plt.xlabel('')  # Verwijder de x-as label
+
+# Verwijder de y-as ticks (categorieën)
+plt.yticks([])
+
+# Verwijder de lijn van de y-as
+plt.gca().spines['left'].set_visible(False)
+
+# Verwijder de legenda
+# plt.legend()  # Deze regel is nu verwijderd
 
 # Verwijder de grid op de achtergrond
 plt.grid(False)
 
 # Verander de dikte van de randen
-plt.gca().spines['left'].set_linewidth(4)  # Dikte van de linker rand
-plt.gca().spines['bottom'].set_linewidth(4)  # Dikte van de onderste rand
-plt.gca().spines['top'].set_visible(False)  # Bovenste rand verbergen
-plt.gca().spines['right'].set_visible(False)  # Rechte rand verbergen
+plt.gca().spines['bottom'].set_linewidth(2)
+plt.gca().spines['top'].set_visible(False)
+plt.gca().spines['right'].set_visible(False)
 
 # Toon de grafiek
 plt.tight_layout()
