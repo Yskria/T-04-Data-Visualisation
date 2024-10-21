@@ -15,11 +15,11 @@ df_tab5['Delivery date'] = pd.to_datetime(df_tab5['Delivery date'])
 
 # Voeg de kolom 'Profit E-com sales' toe aan tabblad 4
 if all(col in df_tab4.columns for col in ['Value', 'Shipping costs', 'Delivery fee', 'Quantity']):
-    df_tab4['Profit E-com sales'] = (df_tab4['Value'] - df_tab4['Shipping costs'] - df_tab4['Delivery fee']) * df_tab4['Quantity']
+    df_tab4['Profit E-com sales'] = (df_tab4['Value'] - df_tab4['Shipping costs'] - df_tab4['Delivery fee']) / df_tab4['Quantity']
 
 # Voeg de kolom 'Profit B2B orders' toe aan tabblad 5
 if all(col in df_tab5.columns for col in ['Value', 'Shipping costs', 'Quantity']):
-    df_tab5['Profit B2B orders'] = (df_tab5['Value'] - df_tab5['Shipping costs']) * df_tab5['Quantity']
+    df_tab5['Profit B2B orders'] = (df_tab5['Value'] - df_tab5['Shipping costs']) / df_tab5['Quantity']
 
 # Filter alleen data uit 2023
 df_tab4 = df_tab4[df_tab4['Delivery date'].dt.year == 2023]
