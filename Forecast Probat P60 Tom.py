@@ -29,9 +29,8 @@ filtered_data = Roasting[Roasting['Product type'] == 'Medium roast']
 
 # Group data for 2023, 2024 and 2025, calculating averages for each quarter
 pivot_data_2023 = filtered_data.groupby('Month')['Weight p/hour'].sum()
-pivot_data_2024 = (pivot_data_2023 * 1 + pivot_data_2023 * 0.1 * (247918.5/264198.5)).rename(index=lambda x: x + ' 24')  # Renaming to indicate 2024
-pivot_data_2025 = (pivot_data_2024 * 1 + pivot_data_2024 * 0.1 * (272710.35/288990.35)).rename(index=lambda x: x + ' 25')  # Renaming to indicate 2025
-
+pivot_data_2024 = (pivot_data_2023 * 1 + pivot_data_2023 * 0.1 * (16280/264198.5)).rename(index=lambda x: x + ' 24')  # Renaming to indicate 2024, 247918.5
+pivot_data_2025 = (pivot_data_2024 * 1 + pivot_data_2024 * 0.1 * (17908/265826.5)).rename(index=lambda x: x + ' 25')  # Renaming to indicate 2025
 # Calculate quarterly averages for 2023
 quarterly_data = {
     'Q1 2023': (pivot_data_2023['Jan'] + pivot_data_2023['Feb'] + pivot_data_2023['Mar']) / 3,
@@ -66,8 +65,8 @@ plt.figure(figsize=(10, 6))
 
 # Plot the quarterly averages
 plt.plot(combined_data.index[:4], combined_data['Weight p/hour'][:4], linewidth=5, color='lightgrey', linestyle='-')  # Q1-Q4 2023 in lightgrey
-plt.plot(combined_data.index[3:8], combined_data['Weight p/hour'][3:8], linewidth=5, color='cornflowerblue', linestyle='-')  # Q1-Q4 2024 in mediumseagreen
-plt.plot(combined_data.index[7:], combined_data['Weight p/hour'][7:], linewidth=5, color='cornflowerblue', linestyle='-') 
+plt.plot(combined_data.index[3:8], combined_data['Weight p/hour'][3:8], linewidth=5, color='orangered', linestyle='-')  # Q1-Q4 2024 in mediumseagreen
+plt.plot(combined_data.index[7:], combined_data['Weight p/hour'][7:], linewidth=5, color='orangered', linestyle='-') 
 
 # Add a vertical line between Q4 2023 and Q1 2024
 plt.axvline(x=3.5, color='lightgrey', linewidth=1)  # Vertical line with lightgrey color and linewidth 1
@@ -76,8 +75,8 @@ plt.axvline(x=7.5, color='lightgrey', linewidth=1)
 # Add horizontal lines for Capacity and Occupancy Rate
 capacity_line = 215
 occupancy_rate_line = 182.75
-plt.axhline(y=capacity_line, color='grey', linestyle='--', linewidth=2)
-plt.axhline(y=occupancy_rate_line, color='orangered', linestyle='--', linewidth=2)
+plt.axhline(y=capacity_line, color='grey', linestyle='-', linewidth=2)
+plt.axhline(y=occupancy_rate_line, color='black', linestyle='--', linewidth=2)
 
 # Set y-axis limits and set y-ticks in steps of 20
 plt.ylim(0, 220)
@@ -87,14 +86,17 @@ plt.yticks(range(0, 221, 20))  # Y-axis steps of 20
 plt.xlim(0, len(combined_data) - 1)
 
 # Add the title using text, aligned slightly to the left
-plt.gca().text(-0.045, 1.05, 'Forecast Utilization Probat P60 (in kg/h)', color='black', fontsize=16, weight='bold', transform=plt.gca().transAxes)
+plt.gca().text(0.125, 1.05, 'Probat P60 Forecast of 10% B2B Growth (in kg/h)', color='black', fontsize=16, weight='bold', transform=plt.gca().transAxes)
+
+# Add text to the right of the title
+plt.text(-0.045, 1.05, 'Utilization', color='orangered', weight='bold', fontsize=16, ha='left', transform=plt.gca().transAxes)
 
 # Add labels for the horizontal lines on the right y-axis
 plt.text(len(combined_data) - 0.9, capacity_line, 'Capacity', color='grey', va='center', ha='left', fontsize=12, weight='bold')
-plt.text(len(combined_data) - 0.9, occupancy_rate_line, 'Occupancy rate', color='orangered', va='center', ha='left', fontsize=12, weight='bold')
+plt.text(len(combined_data) - 0.9, occupancy_rate_line, 'Occupancy rate', color='black', va='center', ha='left', fontsize=12, weight='bold')
 
 # Add label for the Weight p/hour line
-plt.text(len(combined_data) - 0.9, combined_data['Weight p/hour'].values[-1], 'Avg weight', color='cornflowerblue', va='center', ha='left', fontsize=12, weight='bold')
+plt.text(len(combined_data) - 0.9, combined_data['Weight p/hour'].values[-1], 'Avg weight', color='orangered', va='center', ha='left', fontsize=12, weight='bold')
 
 # Update x-axis labels to show Q1, Q2, Q3, and Q4 for each year
 plt.xticks(range(len(combined_data)), ['Q1', 'Q2', 'Q3', 'Q4', 

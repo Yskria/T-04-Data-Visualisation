@@ -35,11 +35,11 @@ plt.figure(figsize=(10, 12))  # Increase height for two plots
 
 # First subplot
 plt.subplot(2, 1, 1)  # 2 rows, 1 column, 1st subplot
-plt.plot(pivot_data.index, pivot_data.values, linewidth=5, color='cornflowerblue')
+plt.plot(pivot_data.index, pivot_data.values, linewidth=5, color='orangered')
 
 # Add horizontal lines
-plt.axhline(y=480, color='grey', linestyle='--', linewidth=2)
-plt.axhline(y=408, color='orangered', linestyle='--', linewidth=2)
+plt.axhline(y=480, color='grey', linestyle='-', linewidth=2)
+plt.axhline(y=408, color='black', linestyle='--', linewidth=2)
 
 # Set y-axis limits
 plt.ylim(0, 500)
@@ -48,14 +48,17 @@ plt.ylim(0, 500)
 plt.xlim(pivot_data.index.min(), pivot_data.index.max())
 
 # Add the title using text, aligned slightly to the left
-plt.gca().text(-0.045, 1.05, 'Underutilization Probat Px120 (in kg/h)', color='black', fontsize=16, weight='bold', transform=plt.gca().transAxes)
+plt.gca().text(-0.046, 1.05, 'Underutilization', color='orangered', fontsize=16, weight='bold', transform=plt.gca().transAxes)  # Align title to the left
+
+# Add text to the right of the title
+plt.text(0.22, 1.05, 'Probat Px120 (in kg/h)', color='black', weight='bold', fontsize=16, ha='left', transform=plt.gca().transAxes)
 
 # Add labels for the horizontal lines on the right y-axis
 plt.text(len(pivot_data.index) - 0.9, 480, 'Capacity', color='grey', va='center', ha='left', fontsize=11, weight='bold')
-plt.text(len(pivot_data.index) - 0.9, 408, 'Occupancy rate', color='orangered', va='center', ha='left', fontsize=11, weight='bold')
+plt.text(len(pivot_data.index) - 0.9, 408, 'Occupancy rate', color='black', va='center', ha='left', fontsize=11, weight='bold')
 
 # Add label for the Weight p/hour line
-plt.text(len(pivot_data.index) - 0.9, pivot_data.values[-1], 'Avg weight', color='cornflowerblue', va='center', ha='left', fontsize=11, weight='bold')
+plt.text(len(pivot_data.index) - 0.9, pivot_data.values[-1], 'Avg weight', color='orangered', va='center', ha='left', fontsize=11, weight='bold')
 
 # Remove top and right spines (axes)
 plt.gca().spines['right'].set_visible(False)
